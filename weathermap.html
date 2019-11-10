@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   
+
+
+      <link href="https://fonts.googleapis.com/css?family=Montserrat:400,900" rel="stylesheet">
+
+      <style>
+      body {
+          font-family: 'Montserrat', sans-serif;
+          font-weight: 400;
+          font-size: 1.3em;
+          color: #fff;
+          text-shadow: .1em .1em 0 rgba(0,0,0,0.3);
+          height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-image: linear-gradient(to right top, #99bbcb, #a5c7d7, #b1d4e2, #bde0ee, #c9edfa);
+      }
+      h1 {
+          margin: 0 auto;
+          font-size: 2.2em;
+          text-align: center;
+          color: #fff;
+          font-size: 5em;
+      }
+      body.sunny {
+          background-image: linear-gradient(to right top, #ff4e50, #ff713e, #ff932b, #ffb41d, #f9d423);
+      }
+      body.cloudy {
+          background-image: linear-gradient(to right top, #63747c, #71858e, #7f96a0, #8da8b2, #9bbac5);
+      }
+      body.rainy {
+          background-image: linear-gradient(to right top, #637c7b, #718e8c, #7ea09e, #8db2b0, #9bc5c3);
+      }
+      </style>
+
+<div id="form1"  >
+  Enter current zipcode
+  <input type="text"  placeholder="zip" name="zip" id="zip" value = "">
+  <br>
+  <button id="try" onclick="Test()">Submit</button>
+  <br>
+</div>
+    
+
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+
+
+    <div id="map">
+        <iframe id = "if" width = "600" height= "450" frameborder="0" style="border:0"src="" allowfullscreen></iframe>
+      </div>   
+
+   
+    
+
+      
+
+<script>
+
+</script>
+
+  <div id="weather">
+    <div id="description"></div>
+    <h1 id="temp"></h1>
+    <div id="location"></div>
+  </div>
+  
+  
+
+
+ 
+  
+  <script lang="text/javascript">
+    
+    
+    function weatherBalloon( cityZip ) {
+  fetch('https://api.openweathermap.org/data/2.5/weather?zip=' + cityZip+ '&appid=' + '797d2f8238657ba6dc35c15d733e7fee')  
+  .then(function(resp) { return resp.json() }) // Convert data to json
+  .then(function(data) {
+    console.log(data);
+    drawWeather(data); // Call drawWeather
+  })
+  .catch(function() {
+    // catch any errors
+  });
+}
+
+  function Test() {
+    var cityZip = document.getElementById("zip").value;
+    weatherBalloon(cityZip);
+    var dummy = "https://www.google.com/maps/embed/v1/place?q=" + cityZip + "&key=AIzaSyDNRmufQHfCRrlCbsx_n_VNoSSploKRB2c";
+    //console.log(dummy);
+    document.getElementById("if").src = dummy;
+
+  //document.getElementById("zip").innerHTML = '<iframe width="600" height="450" frameborder="0" style="border:0"
+   //src="https://www.google.com/maps/embed/v1/place?q=" + cityZip + "&key=AIzaSyDNRmufQHfCRrlCbsx_n_VNoSSploKRB2c" allowfullscreen></iframe>';
+  }
+
+
+    
+
+  
+
+
+
+
+
+
+function drawWeather( d ) {
+	var celcius = Math.round(parseFloat(d.main.temp)-273.15);
+	var fahrenheit = Math.round(((parseFloat(d.main.temp)-273.15)*1.8)+32); 
+	var description = d.weather[0].description;
+	
+	document.getElementById('description').innerHTML = description;
+	document.getElementById('temp').innerHTML = fahrenheit + '&deg;';
+	document.getElementById('location').innerHTML = d.name;
+	
+	if( description.indexOf('rain') > 0 ) {
+  	document.body.className = 'rainy';
+  } else if( description.indexOf('cloud') > 0 ) {
+  	document.body.className = 'cloudy';
+  } else if( description.indexOf('sunny') > 0 ) {
+  	document.body.className = 'sunny';
+  }
+}
+
+</script>
+
+
+
+
+<div id="weather">
+    <div id="description"></div>
+    <h1 id="temp"></h1>
+    <div id="location"></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
